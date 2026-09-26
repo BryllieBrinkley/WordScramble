@@ -37,9 +37,18 @@ struct ContentView: View {
                 }
                 
             }
+            .toolbar(content: {
+                Button {
+                    startGame()
+                } label: {
+                    Text("Start Game")
+                }
+
+            })
             .navigationTitle(rootWord)
             .onSubmit {
                 addNewWord()
+                
             }
             .onAppear(perform: startGame)
             .alert(errorTitle, isPresented: $showingError) {
@@ -68,7 +77,12 @@ struct ContentView: View {
 
         
         guard isPossible(word: answer) else {
-            wordError(title: "Word not possible", message: "Only use only letters contained in \(rootWord)!")
+            wordError(title: "Word not possible", message: "Only use only letters contained in the root word!")
+            return
+        }
+        
+        guard threeLettersAndNotCopy(word: answer) else {
+            wordError(title: "Word must be longer than 3 characters", message: "Guess cannot be the same as the root word and must be longer than 3 characters.")
             return
         }
         
@@ -133,6 +147,16 @@ struct ContentView: View {
         showingError = true
     }
     
+    func threeLettersAndNotCopy(word: String) -> Bool {
+        if word == rootWord {
+            return false
+        } else if word.count < 3 {
+            return false
+        } else {
+            return true
+        }
+    }
+
 }
 
 #Preview {
