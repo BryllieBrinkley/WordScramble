@@ -54,11 +54,6 @@ struct ContentView: View {
         let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard answer.count > 0 else { return }
-        withAnimation {
-            usedWords.insert(answer, at: 0)
-        }
-        
-        newWord = ""
     
         guard isOriginial(word: answer) else {
             wordError(title: "Word used already", message: "Come up with a new word")
@@ -76,6 +71,12 @@ struct ContentView: View {
             wordError(title: "Word not possible", message: "Only use only letters contained in \(rootWord)!")
             return
         }
+        
+        withAnimation {
+            usedWords.insert(answer, at: 0)
+        }
+        
+        newWord = ""
 
     }
     
